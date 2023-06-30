@@ -63,8 +63,19 @@ pub fn run_inlining(env: &mut CompilationEnv, prog: &mut Program) {
     .run(prog)
 }
 
+fn dump_program(prog: &mut Program) {
+    eprintln!("program = {}", ast_debug::display_verbose(prog));
+}
+
+fn dump_expr(expr: &mut Exp) {
+    eprintln!("expr = {}", ast_debug::display_verbose(expr));
+}
+
 impl<'l> Inliner<'l> {
     fn run(&mut self, prog: &mut Program) {
+        eprintln!("Inline 0");
+        dump_program(prog);
+
         // First collect all definitions of inlined functions so we can expand them later in the AST.
         self.visit_functions(prog, VisitingMode::All, &mut |ctx, fname, fdef| {
             if let Some(mid) = ctx.current_module {
@@ -86,6 +97,10 @@ impl<'l> Inliner<'l> {
                 }
             }
         });
+
+        eprintln!("Inline 1");
+        dump_program(prog);
+
         // Also collect all structs, we need them for ability computation
         for (_, mid, mdef) in prog.modules.iter() {
             for (_, name, sdef) in mdef.structs.iter() {
@@ -94,6 +109,10 @@ impl<'l> Inliner<'l> {
             }
         }
 
+        eprintln!("Inline 2");
+        dump_program(prog);
+
+        // BEGIN BUG
         // Next expand all inline function calls
         self.visit_functions(
             prog,
@@ -101,11 +120,18 @@ impl<'l> Inliner<'l> {
             &mut |inliner, _name, fdef| {
                 if !fdef.inline {
                     let mut visitor = OuterVisitor { inliner };
+                    eprintln!("Before:");
+                    Self::eprint_fdef(&format!("fun {} ", _name), fdef);
                     Dispatcher::new(&mut visitor).function(fdef);
-                    //Self::eprint_fdef(&format!("fun {} ", _name), fdef);
+                    eprintln!("After:");
+                    Self::eprint_fdef(&format!("fun {} ", _name), fdef);
                 }
             },
         );
+        // END BUG
+
+        eprintln!("Inline 3");
+        dump_program(prog);
 
         // Now remove all inline functions from the program.
         for (_, _, mdef) in prog.modules.iter_mut() {
@@ -118,6 +144,9 @@ impl<'l> Inliner<'l> {
                     }
                 });
         }
+
+        eprintln!("Inline 4");
+        dump_program(prog);
 
         // Finally do acquires checking as we have inlined everything
         self.visit_functions(prog, VisitingMode::SourceOnly, &mut |inliner, name, def| {
@@ -654,6 +683,8 @@ impl<'l> Inliner<'l> {
 
             let mut inliner_visitor = OuterVisitor { inliner: self };
             let mut inlined_args = mcall.arguments.clone();
+            eprintln!("module_call args before inlining:");
+            dump_expr(&mut inlined_args);
             Dispatcher::new(&mut inliner_visitor).exp(&mut inlined_args);
 
             // Expand Type formal params in types of other params.
