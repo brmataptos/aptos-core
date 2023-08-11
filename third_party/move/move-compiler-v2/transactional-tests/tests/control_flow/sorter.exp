@@ -1,0 +1,101 @@
+comparison between v1 and v2 failed:
+= processed 2 tasks
+= 
++ task 0 'publish'. lines 1-65:
++ Error: compilation errors:
++  error: unbound module
++   ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp9AL4Sd:3:9
++   │
++ 3 │     use std::vector;
++   │         ^^^^^^^^^^^ Invalid 'use'. Unbound module: '(std=0x1)::vector'
++ 
++ error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp9AL4Sd:11:24
++    │
++ 11 │     let y : vector<u64> = vector::empty<u64>();
++    │                           ^^^^^^ Unbound module alias 'vector'
++ 
++ error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp9AL4Sd:13:16
++    │
++ 13 │     let l : u64 = vector::length<u64>(x);
++    │                   ^^^^^^ Unbound module alias 'vector'
++ 
++ error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp9AL4Sd:15:38
++    │
++ 15 │         vector::push_back<u64>(&mut y, *vector::borrow<u64>(x, i));
++    │                                         ^^^^^^ Unbound module alias 'vector'
++ 
++ error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp9AL4Sd:15:6
++    │
++ 15 │         vector::push_back<u64>(&mut y, *vector::borrow<u64>(x, i));
++    │         ^^^^^^ Unbound module alias 'vector'
++ 
++ error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp9AL4Sd:22:13
++    │
++ 22 │     while (i < vector::length<u64>(x)) {
++    │                ^^^^^^ Unbound module alias 'vector'
++ 
++ error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp9AL4Sd:24:17
++    │
++ 24 │         while (j < vector::length<u64>(x)) {
++    │                    ^^^^^^ Unbound module alias 'vector'
++ 
++ error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp9AL4Sd:25:8
++    │
++ 25 │         if (*vector::borrow<u64>(x, i) > *vector::borrow<u64>(x, j)) {
++    │              ^^^^^^ Unbound module alias 'vector'
++ 
++ error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp9AL4Sd:25:37
++    │
++ 25 │         if (*vector::borrow<u64>(x, i) > *vector::borrow<u64>(x, j)) {
++    │                                           ^^^^^^ Unbound module alias 'vector'
++ 
++ error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp9AL4Sd:26:7
++    │
++ 26 │             vector::swap<u64>(x, i, j)
++    │             ^^^^^^ Unbound module alias 'vector'
++ 
++ error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp9AL4Sd:34:16
++    │
++ 34 │     let l1: u64 = vector::length<u64>(x);
++    │                   ^^^^^^ Unbound module alias 'vector'
++ 
++ error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp9AL4Sd:35:16
++    │
++ 35 │     let l2: u64 = vector::length<u64>(y);
++    │                   ^^^^^^ Unbound module alias 'vector'
++ 
++ error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp9AL4Sd:41:11
++    │
++ 41 │         if (*vector::borrow<u64>(x, i) != *vector::borrow<u64>(y, i)) {
++    │              ^^^^^^ Unbound module alias 'vector'
++ 
++ error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp9AL4Sd:41:41
++    │
++ 41 │         if (*vector::borrow<u64>(x, i) != *vector::borrow<u64>(y, i)) {
++    │                                            ^^^^^^ Unbound module alias 'vector'
++ 
++ 
++ 
++ task 1 'run'. lines 67-73:
++ Error: compilation errors:
++  error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmpRy1M1i:69:9
++    │
++ 69 │     use 0x42::heap::main;
++    │         ^^^^^^^^^^ Invalid 'use'. Unbound module: '0x42::heap'
++ 
++ 
++ 

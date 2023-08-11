@@ -1,0 +1,26 @@
+comparison between v1 and v2 failed:
+= processed 2 tasks
+= 
+- task 1 'run'. lines 90-96:
+- Error: Script execution failed with VMError: {
+-     major_status: ABORTED,
+-     sub_status: Some(31),
++ task 0 'publish'. lines 1-88:
++ Error: Unable to publish module '0000000000000000000000000000000000000000000000000000000000000042::heap'. Got VMError: {
++     major_status: CALL_TYPE_MISMATCH_ERROR,
++     sub_status: None,
+=     location: 0x42::heap,
+=     indices: redacted,
+=     offsets: redacted,
+= }
+= 
++ task 1 'run'. lines 90-96:
++ Error: compilation errors:
++  error: unbound module
++    ┌─ /var/folders/vj/lyj2zgcs56lgg2jlktrz55rc0000gn/T/.tmp4wjMYK:92:9
++    │
++ 92 │     use 0x42::heap::main;
++    │         ^^^^^^^^^^ Invalid 'use'. Unbound module: '0x42::heap'
++ 
++ 
++ 
