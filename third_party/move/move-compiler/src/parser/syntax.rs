@@ -1277,10 +1277,10 @@ fn parse_for_loop(context: &mut Context) -> Result<(Exp, bool), Box<Diagnostic>>
 
     // To create the declaration "let flag = false", first create the variable flag, and then assign it to false
     let flag_symb = Symbol::from("__update_iter_flag");
-    let flag = sp(for_loc, vec![sp(
+    let flag = sp(
         for_loc,
-        Bind_::Var(Var(sp(for_loc, flag_symb))),
-    )]);
+        vec![sp(for_loc, Bind_::Var(Var(sp(for_loc, flag_symb))))],
+    );
     let false_exp = sp(for_loc, Exp_::Value(sp(for_loc, Value_::Bool(false))));
     let decl_flag = sp(
         for_loc,
