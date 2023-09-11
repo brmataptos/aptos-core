@@ -104,6 +104,11 @@ fn move_test_debug() -> bool {
     *MOVE_TEST_DEBUG
 }
 
+fn move_test_debug() -> bool {
+    static MOVE_TEST_DEBUG: Lazy<bool> = Lazy::new(|| read_bool_env_var("MOVE_TEST_DEBUG"));
+    *MOVE_TEST_DEBUG
+}
+
 impl<'a> MoveTestAdapter<'a> for SimpleVMTestAdapter<'a> {
     type ExtraInitArgs = EmptyCommand;
     type ExtraPublishArgs = AdapterPublishArgs;

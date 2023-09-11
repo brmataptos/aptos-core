@@ -22,6 +22,7 @@ use move_command_line_common::files::{
 };
 use move_core_types::language_storage::ModuleId as CompiledModuleId;
 use move_symbol_pool::Symbol;
+use once_cell::sync::Lazy;
 use std::{
     collections::{BTreeMap, BTreeSet},
     fs,
@@ -50,6 +51,17 @@ pub struct SteppedCompiler<'a, const P: Pass> {
     compilation_env: CompilationEnv,
     pre_compiled_lib: Option<&'a FullyCompiledProgram>,
     program: Option<PassResult>,
+}
+
+pub fn debug_compiler() -> bool {
+    static DEBUG_COMPILER: Lazy<bool> = Lazy::new(|| match std::env::var("MOVE_COMPILER_DEBUG") {
+        Ok(s) => {
+            let s = s.to_lowercase();
+            s != "0" && s != "false" && s != "no"
+        },
+        Err(_) => true,
+    });
+    *DEBUG_COMPILER
 }
 
 pub type Pass = u8;
