@@ -17,16 +17,11 @@ use crate::{
     },
     to_bytecode, typing, unit_test, verification,
 };
-use move_command_line_common::{
-    env::read_bool_env_var,
-    files::{
-        extension_equals, find_filenames, MOVE_COMPILED_EXTENSION, MOVE_EXTENSION,
-        SOURCE_MAP_EXTENSION,
-    },
+use move_command_line_common::files::{
+    extension_equals, find_filenames, MOVE_COMPILED_EXTENSION, MOVE_EXTENSION, SOURCE_MAP_EXTENSION,
 };
 use move_core_types::language_storage::ModuleId as CompiledModuleId;
 use move_symbol_pool::Symbol;
-use once_cell::sync::Lazy;
 use std::{
     collections::{BTreeMap, BTreeSet},
     fs,
@@ -55,11 +50,6 @@ pub struct SteppedCompiler<'a, const P: Pass> {
     compilation_env: CompilationEnv,
     pre_compiled_lib: Option<&'a FullyCompiledProgram>,
     program: Option<PassResult>,
-}
-
-pub fn debug_compiler() -> bool {
-    static DEBUG_COMPILER: Lazy<bool> = Lazy::new(|| read_bool_env_var("MOVE_COMPILER_DEBUG"));
-    *DEBUG_COMPILER
 }
 
 pub type Pass = u8;

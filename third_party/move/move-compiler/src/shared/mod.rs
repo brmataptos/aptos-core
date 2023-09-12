@@ -113,13 +113,13 @@ pub fn shortest_cycle<'a, T: Ord + Hash>(
             );
             match (shortest_path, path_opt) {
                 (p, None) | (None, p) => p,
-                (Some((acc_len, acc_path)), Some((cur_len, cur_path))) => Some(
-                    if cur_len < acc_len {
+                (Some((acc_len, acc_path)), Some((cur_len, cur_path))) => {
+                    Some(if cur_len < acc_len {
                         (cur_len, cur_path)
                     } else {
                         (acc_len, acc_path)
-                    },
-                ),
+                    })
+                },
             }
         });
     let (_, mut path) = shortest_path.unwrap();
@@ -378,21 +378,6 @@ pub struct Flags {
     /// Debug compiler by printing out internal information
     #[clap(long = cli::DEBUG_FLAG, default_value=debug_compiler_env_var_str())]
     debug: bool,
-
-    /// Show warnings about use of deprecated functions, modules, constants, etc.
-    /// Note that current value of this constant is "Wdeprecation"
-    #[clap(long = cli::MOVE_COMPILER_WARN_OF_DEPRECATION_USE_FLAG, default_value=move_compiler_warn_of_deprecation_use_env_var_str())]
-    warn_of_deprecation_use: bool,
-
-    /// Show warnings about use of deprecated usage in the Aptos libraries,
-    /// which we should generally not bother users with.
-    /// Note that current value of this constant is "Wdeprecation-aptos"
-    #[clap(long = cli::WARN_OF_DEPRECATION_USE_IN_APTOS_LIBS_FLAG, default_value=warn_of_deprecation_use_in_aptos_libs_env_var_str())]
-    warn_of_deprecation_use_in_aptos_libs: bool,
-
-    /// Support v2 syntax (up to expansion phase)
-    #[clap(long = cli::V2_FLAG)]
-    v2: bool,
 }
 
 impl Flags {
