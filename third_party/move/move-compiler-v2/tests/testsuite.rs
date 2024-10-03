@@ -122,12 +122,12 @@ const TEST_CONFIGS: Lazy<BTreeMap<&str, TestConfig>> = Lazy::new(|| {
             ],
             // Need to exclude `inlining` because it is under checking
             // TODO: move `inlining` tests to top-level test directory
-            exclude: vec!["/inlining/"],
+            exclude: vec!["/inlining/", "/more-v1/"],
             exp_suffix: None,
             options: opts
                 .clone()
                 .set_experiment(Experiment::ACQUIRES_CHECK, false),
-            stop_after: StopAfter::AstPipeline,
+            stop_after: StopAfter::BytecodeGen,
             dump_ast: DumpLevel::EndStage,
             dump_bytecode: DumpLevel::None,
             dump_bytecode_filter: None,
@@ -169,15 +169,10 @@ const TEST_CONFIGS: Lazy<BTreeMap<&str, TestConfig>> = Lazy::new(|| {
             exp_suffix: None,
             options: opts
                 .clone()
-                // Need to turn off usage checks because they complain about
-                // lambda parameters outside of inline functions. Other checks
-                // also turned off for now since they mess up baseline.
-                .set_experiment(Experiment::CHECKS, false)
-                .set_experiment(Experiment::OPTIMIZE, false)
-                .set_experiment(Experiment::OPTIMIZE_WAITING_FOR_COMPARE_TESTS, false)
-                .set_experiment(Experiment::INLINING, false)
-                .set_experiment(Experiment::RECURSIVE_TYPE_CHECK, false)
-                .set_experiment(Experiment::SPEC_REWRITE, false)
+                .set_experiment(Experiment::LAMBDA_FIELDS, true)
+                .set_experiment(Experiment::LAMBDA_PARAMS, true)
+                .set_experiment(Experiment::LAMBDA_RESULTS, true)
+                .set_experiment(Experiment::LAMBDA_VALUES, true)
                 .set_experiment(Experiment::LAMBDA_LIFTING, true),
             stop_after: StopAfter::AstPipeline,
             dump_ast: DumpLevel::AllStages,
@@ -200,12 +195,26 @@ const TEST_CONFIGS: Lazy<BTreeMap<&str, TestConfig>> = Lazy::new(|| {
             dump_bytecode: DumpLevel::None, // do not dump anything
             dump_bytecode_filter: None,
         },
-        // Tests for front-end, diagnostics (inlining, simplifier, folding, etc.)
+        // Tests for more-v1 tests
+        TestConfig {
+            name: "more-v1",
+            runner: |p| run_test(p, get_config_by_name("more-v1")),
+            include: vec!["/more-v1/"],
+            exclude: vec![],
+            exp_suffix: None,
+            options: opts.clone().set_experiment(Experiment::AST_SIMPLIFY, true),
+            // Run the entire compiler pipeline to double-check the result
+            stop_after: StopAfter::FileFormat,
+            dump_ast: DumpLevel::None,
+            dump_bytecode: DumpLevel::None, // do not dump anything
+            dump_bytecode_filter: None,
+        },
+        // Tests for inlining, simplifier, and folding
         TestConfig {
             name: "inlining-et-al",
             runner: |p| run_test(p, get_config_by_name("inlining-et-al")),
             include: vec!["/inlining/", "/folding/", "/simplifier/"],
-            exclude: vec![],
+            exclude: vec!["/more-v1/"],
             exp_suffix: None,
             options: opts.clone().set_experiment(Experiment::AST_SIMPLIFY, true),
             // Run the entire compiler pipeline to double-check the result
